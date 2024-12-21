@@ -1,5 +1,5 @@
 // Reemplaza con el enlace a tu Google Sheet publicado como JSON
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwtgOVBdtZqYI9Wd6ZFqhoFA8cWrq4MGmZEkhfyK-NszNhacSyJJy1tJ_wH3YYc3sPB/exec";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz8DgNJd0sO51ebG6-Mt8VYRLA2E2dnYA65q6PXpFUNWJe_cSxmFOWtpWtNwk9-qQRm/exec";
 
 async function searchExpediente() {
   const query = document.getElementById("searchQuery").value.toLowerCase();
