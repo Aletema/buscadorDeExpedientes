@@ -57,9 +57,28 @@ async function loadFromDatabase() {
 document.getElementById("fileInput").addEventListener("change", async function (event) {
   const file = event.target.files[0];
   if (!file) {
-    alert("Por favor, selecciona un archivo.");
-    return;
+      alert("Por favor, selecciona un archivo válido.");
+      return;
   }
+
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+      try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          expedienteData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+          await saveToDatabase(expedienteData); // Guardar en IndexedDB
+          alert("Archivo cargado exitosamente.");
+      } catch (error) {
+          console.error("Error al procesar el archivo:", error);
+          alert("Error al cargar el archivo. Verifica el formato.");
+      }
+  };
+  reader.readAsArrayBuffer(file);
+});
+
 
   const reader = new FileReader();
   reader.onload = async function (e) {
@@ -72,7 +91,7 @@ document.getElementById("fileInput").addEventListener("change", async function (
     alert("Archivo cargado y guardado exitosamente.");
   };
   reader.readAsArrayBuffer(file);
-});
+
 
 // Función para formatear fechas
 function formatDate(date) {
@@ -83,14 +102,17 @@ function formatDate(date) {
 }
 
 // Buscar expedientes
-async function searchExpediente() {
-  if (!expedienteData.length) {
-    expedienteData = await loadFromDatabase(); // Cargar datos desde IndexedDB si no están cargados
-    if (!expedienteData.length) {
-      alert("Primero carga un archivo Excel.");
-      return;
-    }
+(async function () {
+  try {
+      expedienteData = await loadFromDatabase();
+      if (expedienteData.length) {
+          console.log("Datos cargados correctamente desde el almacenamiento local.");
+      }
+  } catch (error) {
+      console.error("Error al cargar datos de IndexedDB:", error);
   }
+})();
+
 
   const query = document.getElementById("searchQuery").value.toLowerCase();
   const headers = expedienteData[1]; // Fila 2 contiene los títulos de las columnas
@@ -103,7 +125,7 @@ async function searchExpediente() {
   } else {
     alert("No se encontraron resultados.");
   }
-}
+
 
 // Mostrar los resultados en el modal
 function showResultModal(row, headers) {
