@@ -57,43 +57,29 @@ async function loadFromDatabase() {
 document.getElementById("fileInput").addEventListener("change", async function (event) {
   const file = event.target.files[0];
   if (!file) {
-      alert("Por favor, selecciona un archivo válido.");
-      return;
+    alert("Por favor, selecciona un archivo válido.");
+    return;
   }
 
   const reader = new FileReader();
   reader.onload = async function (e) {
-      try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: "array" });
-          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          expedienteData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+    try {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      expedienteData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-          await saveToDatabase(expedienteData); // Guardar en IndexedDB
-          alert("Archivo cargado exitosamente.");
-      } catch (error) {
-          console.error("Error al procesar el archivo:", error);
-          alert("Error al cargar el archivo. Verifica el formato.");
-      }
+      await saveToDatabase(expedienteData); // Guardar en IndexedDB
+      alert("Archivo cargado exitosamente.");
+    } catch (error) {
+      console.error("Error al procesar el archivo:", error);
+      alert("Error al cargar el archivo. Verifica el formato.");
+    }
   };
   reader.readAsArrayBuffer(file);
 });
 
-
-  const reader = new FileReader();
-  reader.onload = async function (e) {
-    const data = new Uint8Array(e.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
-    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-    expedienteData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 }); // Leer como matriz
-
-    await saveToDatabase(expedienteData); // Guardar en IndexedDB
-    alert("Archivo cargado y guardado exitosamente.");
-  };
-  reader.readAsArrayBuffer(file);
-
-
-// Función para formatear fechas
+// Formatear fechas
 function formatDate(date) {
   if (!date) return "N/A";
   const parsedDate = new Date(date);
@@ -102,22 +88,15 @@ function formatDate(date) {
 }
 
 // Buscar expedientes
-(async function () {
-  try {
-      expedienteData = await loadFromDatabase();
-      if (expedienteData.length) {
-          console.log("Datos cargados correctamente desde el almacenamiento local.");
-      }
-  } catch (error) {
-      console.error("Error al cargar datos de IndexedDB:", error);
-  }
-})();
-
-
+function searchExpediente() {
   const query = document.getElementById("searchQuery").value.toLowerCase();
+  if (!expedienteData || expedienteData.length < 3) {
+    alert("No hay datos cargados. Por favor, sube un archivo.");
+    return;
+  }
+
   const headers = expedienteData[1]; // Fila 2 contiene los títulos de las columnas
   const rows = expedienteData.slice(2); // Datos reales (desde la fila 3)
-
   const result = rows.find(row => String(row[9]).toLowerCase().includes(query)); // Buscar en columna J (índice 9)
 
   if (result) {
@@ -125,9 +104,9 @@ function formatDate(date) {
   } else {
     alert("No se encontraron resultados.");
   }
+}
 
-
-// Mostrar los resultados en el modal
+// Mostrar resultados en un modal
 function showResultModal(row, headers) {
   const fields = [
     { title: "N° PM", index: 0 },
@@ -143,17 +122,15 @@ function showResultModal(row, headers) {
     { title: "Estado del expediente", index: 22 },
   ];
 
-  // Generar contenido del modal
   const content = fields
     .map(field => {
       let value = row[field.index] || "N/A";
-      if (field.isDate) value = formatDate(value); // Formatear fechas si es necesario
+      if (field.isDate) value = formatDate(value);
       return `<p><strong>${headers[field.index]}:</strong> ${value}</p>`;
     })
     .join("");
 
-  // Revisar si "Estado del expediente" contiene "NO"
-  const estadoExpediente = String(row[22] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
+  const estadoExpediente = String(row[22] || "").toUpperCase();
   const indicador = estadoExpediente.includes("NO")
     ? `<div class="indicador-no-apto">No apto para trabajar</div>`
     : "";
@@ -163,16 +140,20 @@ function showResultModal(row, headers) {
   document.getElementById("overlay").style.display = "block";
 }
 
-// Cerrar el modal
+// Cerrar modal
 function closeModal() {
   document.getElementById("modal").style.display = "none";
   document.getElementById("overlay").style.display = "none";
 }
 
-// Cargar datos automáticamente al inicio
+// Cargar datos al inicio
 (async function () {
   expedienteData = await loadFromDatabase();
   if (expedienteData.length) {
-    alert("Datos cargados desde el almacenamiento local.");
+    console.log("Datos cargados desde IndexedDB.");
   }
 })();
+
+// Hacer accesibles las funciones globalmente
+window.searchExpediente = searchExpediente;
+window.closeModal = closeModal;
