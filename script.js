@@ -64,11 +64,20 @@ function showResultModal(row, headers) {
         })
         .join("");
 
-    // Revisar si "Estado del expediente" contiene "NO"
-    const estadoExpediente = String(row[22] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
-    const indicador = estadoExpediente.includes("NO")
-        ? `<div class="indicador-no-apto">No apto para trabajar</div>`
-        : "";
+   // Revisar el "Estado del expediente" y generar el indicador dinámico
+const estadoExpediente = String(row[22] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
+let indicador = "";
+
+if (estadoExpediente.includes("NO")) {
+    indicador = `<div class="indicador-no-apto" style="background-color: red; color: white; padding: 10px; text-align: center; margin-top: 10px;">
+                    ${estadoExpediente}
+                 </div>`;
+} else if (estadoExpediente.includes("OK")) {
+    indicador = `<div class="indicador-apto" style="background-color: green; color: white; padding: 10px; text-align: center; margin-top: 10px;">
+                    ${estadoExpediente}
+                 </div>`;
+}
+
 
     document.getElementById("modalContent").innerHTML = content + indicador;
     document.getElementById("modal").style.display = "block";
