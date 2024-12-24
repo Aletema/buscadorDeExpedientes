@@ -1,85 +1,11 @@
-let expedienteData = []; // Almacena los datos cargados del Excel
-const dbName = "expedienteDB";
-const storeName = "expedientes";
+// ID de la hoja de Google Sheets y clave de API
+const sheetId = "13_N-JkdVvl3Tu5txTu9qR2xXpSVWzhqowhLn-JWUCKc"; // Reemplaza con el ID de tu hoja
+const apiKey = "AIzaSyAo_EiLMzVXYd-C0A8-9MzCkrYDBL6bwzI"; // Reemplaza con tu clave de API
+const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Hoja1?key=${apiKey}`;
 
-// Inicializar IndexedDB
-function initDatabase() {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName, 1);
+let expedienteData = []; // Almacena los datos cargados desde Google Sheets
 
-    request.onupgradeneeded = function (event) {
-      const db = event.target.result;
-      if (!db.objectStoreNames.contains(storeName)) {
-        db.createObjectStore(storeName);
-      }
-    };
-
-    request.onsuccess = function (event) {
-      resolve(event.target.result);
-    };
-
-    request.onerror = function (event) {
-      reject(event.target.error);
-    };
-  });
-}
-
-// Guardar datos en IndexedDB
-async function saveToDatabase(data) {
-  const db = await initDatabase();
-  const transaction = db.transaction(storeName, "readwrite");
-  const store = transaction.objectStore(storeName);
-
-  store.put(data, "excelData");
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = resolve;
-    transaction.onerror = reject;
-  });
-}
-
-// Leer datos desde IndexedDB
-async function loadFromDatabase() {
-  const db = await initDatabase();
-  const transaction = db.transaction(storeName, "readonly");
-  const store = transaction.objectStore(storeName);
-
-  return new Promise((resolve, reject) => {
-    const request = store.get("excelData");
-    request.onsuccess = function () {
-      resolve(request.result || []);
-    };
-    request.onerror = reject;
-  });
-}
-
-// Manejar la carga del archivo Excel
-document.getElementById("fileInput").addEventListener("change", async function (event) {
-  const file = event.target.files[0];
-  if (!file) {
-    alert("Por favor, selecciona un archivo válido.");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = async function (e) {
-    try {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-      expedienteData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-      await saveToDatabase(expedienteData); // Guardar en IndexedDB
-      alert("Archivo cargado exitosamente.");
-    } catch (error) {
-      console.error("Error al procesar el archivo:", error);
-      alert("Error al cargar el archivo. Verifica el formato.");
-    }
-  };
-  reader.readAsArrayBuffer(file);
-});
-
-// Formatear fechas
+// Función para formatear fechas
 function formatDate(date) {
   if (!date) return "N/A";
   const parsedDate = new Date(date);
@@ -87,17 +13,28 @@ function formatDate(date) {
   return parsedDate.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
+// Cargar datos desde Google Sheets
+async function loadFromGoogleSheets() {
+  try {
+    const response = await fetch(sheetUrl);
+    if (!response.ok) throw new Error("No se pudo cargar la hoja de cálculo");
+    const data = await response.json();
+    expedienteData = data.values; // `values` contiene los datos como matriz
+    console.log("Datos cargados desde Google Sheets.");
+    alert("Datos cargados desde el servidor.");
+  } catch (error) {
+    console.error("Error al cargar datos desde Google Sheets:", error);
+    alert("Error al cargar datos. Verifica la conexión con Google Sheets.");
+  }
+}
+
 // Buscar expedientes
 function searchExpediente() {
   const query = document.getElementById("searchQuery").value.toLowerCase();
-  if (!expedienteData || expedienteData.length < 3) {
-    alert("No hay datos cargados. Por favor, sube un archivo.");
-    return;
-  }
+  const headers = expedienteData[0]; // Fila 1 contiene los títulos de las columnas
+  const rows = expedienteData.slice(1); // Datos reales (desde la fila 2)
 
-  const headers = expedienteData[1]; // Fila 2 contiene los títulos de las columnas
-  const rows = expedienteData.slice(2); // Datos reales (desde la fila 3)
-  const result = rows.find(row => String(row[9]).toLowerCase().includes(query)); // Buscar en columna J (índice 9)
+  const result = rows.find(row => String(row[9] || "").toLowerCase().includes(query)); // Buscar en columna J (índice 9)
 
   if (result) {
     showResultModal(result, headers);
@@ -106,7 +43,7 @@ function searchExpediente() {
   }
 }
 
-// Mostrar resultados en un modal
+// Mostrar los resultados en el modal
 function showResultModal(row, headers) {
   const fields = [
     { title: "N° PM", index: 0 },
@@ -122,15 +59,17 @@ function showResultModal(row, headers) {
     { title: "Estado del expediente", index: 22 },
   ];
 
+  // Generar contenido del modal
   const content = fields
     .map(field => {
       let value = row[field.index] || "N/A";
-      if (field.isDate) value = formatDate(value);
+      if (field.isDate) value = formatDate(value); // Formatear fechas si es necesario
       return `<p><strong>${headers[field.index]}:</strong> ${value}</p>`;
     })
     .join("");
 
-  const estadoExpediente = String(row[22] || "").toUpperCase();
+  // Revisar si "Estado del expediente" contiene "NO"
+  const estadoExpediente = String(row[22] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
   const indicador = estadoExpediente.includes("NO")
     ? `<div class="indicador-no-apto">No apto para trabajar</div>`
     : "";
@@ -140,20 +79,13 @@ function showResultModal(row, headers) {
   document.getElementById("overlay").style.display = "block";
 }
 
-// Cerrar modal
+// Cerrar el modal
 function closeModal() {
   document.getElementById("modal").style.display = "none";
   document.getElementById("overlay").style.display = "none";
 }
 
-// Cargar datos al inicio
+// Cargar datos automáticamente al inicio
 (async function () {
-  expedienteData = await loadFromDatabase();
-  if (expedienteData.length) {
-    console.log("Datos cargados desde IndexedDB.");
-  }
+  await loadFromGoogleSheets();
 })();
-
-// Hacer accesibles las funciones globalmente
-window.searchExpediente = searchExpediente;
-window.closeModal = closeModal;
