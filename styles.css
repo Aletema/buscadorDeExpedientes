@@ -6,31 +6,47 @@ body {
     margin: 0;
     padding: 20px;
 }
-  
+
 h1 {
     text-align: center;
     color: #0056b3;
 }
 
-input[type="text"], input[type="file"], button {
+input[type="text"] {
     display: block;
-    margin: 10px auto;
+    margin: 20px auto;
     padding: 10px;
     font-size: 16px;
     border-radius: 5px;
     border: 1px solid #ccc;
-}
-
-input[type="text"], input[type="file"] {
     width: 80%;
     max-width: 500px;
 }
 
+/* Contenedor para los botones */
+.buttons-container {
+    display: flex;
+    flex-direction: column; /* Coloca los botones en una columna */
+    align-items: center; /* Centra los botones horizontalmente */
+    gap: 50px; /* Espacio entre los botones */
+}
+
+button, #searchAgainLink {
+    width: 200px; /* Mismo ancho para ambos botones */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none; /* Elimina el subrayado del enlace */
+}
+
+/* Estilo del botón "Buscar" */
 button {
     background-color: #0056b3;
     color: white;
     border: none;
-    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
@@ -39,6 +55,18 @@ button:hover {
 
 button:active {
     background-color: #002f5e;
+}
+
+/* Estilo del enlace "Hacer otra búsqueda" */
+#searchAgainLink {
+    color: #f1c40f; /* Amarillo */
+    background-color: #2c3e50; /* Fondo oscuro */
+    border: none;
+    transition: background-color 0.3s;
+}
+
+#searchAgainLink:hover {
+    background-color: #34495e; /* Cambia el fondo al pasar el mouse */
 }
 
 /* Modal */
@@ -70,39 +98,6 @@ button:active {
     z-index: 1000;
 }
 
-/* Contenido del modal */
-#modalContent {
-    margin-bottom: 20px;
-}
-
-#modalContent p {
-    margin: 10px 0;
-    font-size: 16px;
-}
-
-#modalContent strong {
-    color: #0056b3;
-}
-
-/* Botón del modal */
-#modal button {
-    background-color: #f44336;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#modal button:hover {
-    background-color: #d32f2f;
-}
-
-#modal button:active {
-    background-color: #b71c1c;
-}
-
 /* Indicadores de estado */
 .indicador-no-apto {
     text-align: center;
@@ -123,23 +118,14 @@ button:active {
     text-align: center;
     margin-top: 10px;
 }
-
-/* Estilo para el enlace "Hacer otra búsqueda" */
-.search-again-container {
-    text-align: center; /* Centra el enlace */
-    margin-top: 20px; /* Espacio entre el botón de búsqueda y el enlace */
-}
-
-#searchAgainLink {
-    color: #f1c40f; /* Amarillo */
-    font-size: 18px;
-    text-decoration: none; /* Elimina el subrayado predeterminado */
-    padding: 10px 20px; /* Espaciado alrededor del texto */
-    background-color: #2c3e50; /* Fondo oscuro para contrastar */
-    border-radius: 5px; /* Bordes redondeados */
-    transition: background-color 0.3s; /* Transición suave en el color de fondo */
-}
-
-#searchAgainLink:hover {
-    background-color: #34495e; /* Cambia el color de fondo al pasar el mouse */
+#modal button {
+    display: block; /* Asegura que el botón se comporte como un bloque */
+    margin: 20px auto 0; /* Centra el botón horizontalmente y agrega un margen superior */
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }

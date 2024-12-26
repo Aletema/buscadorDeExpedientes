@@ -12,9 +12,8 @@
 </head>
 <body>
   <h1>Buscador de Expedientes</h1>
+    <input type="text" id="searchQuery" placeholder="Buscar por número de expediente..." />
   
-  <input type="text" id="searchQuery" placeholder="Buscar por número de expediente..." />
-  <button onclick="searchExpediente()">Buscar</button>
 
   <!-- Modal para mostrar resultados -->
   <div id="overlay" onclick="closeModal()"></div>
@@ -23,8 +22,9 @@
     <button onclick="closeModal()">Cerrar</button>
   </div>
 <!-- Enlace para hacer otra búsqueda -->
-<div class="search-again-container">
+<div  class="buttons-container">
   <a href="index.html" id="searchAgainLink">Hacer otra búsqueda</a>
+  <button onclick="searchExpediente()">Buscar</button>
 </div>
   <script src="script.js"></script>
 </body>
