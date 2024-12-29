@@ -26,37 +26,40 @@ async function loadFromGoogleSheets() {
 
 // Buscar expedientes
 function searchExpediente() {
-  const query = document.getElementById("searchQuery").value.toLowerCase();
-
-  if (!query.trim()) {
-      // Mostrar alerta si no se ha ingresado un número de expediente
+    const query = document.getElementById("searchQuery").value.toLowerCase();
+    const searchType = document.getElementById("searchType").value;
+  
+    if (!query.trim()) {
       Swal.fire({
-          title: "Error",
-          text: "Por favor, agrega un número de expediente.",
-          icon: "warning",
-          confirmButtonText: "Aceptar"
+        title: "Error",
+        text: "Por favor, ingrese un valor para buscar.",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
       });
       return;
-  }
-
-  const headers = expedienteData[1]; // Fila 1 contiene los títulos de las columnas
-  const rows = expedienteData.slice(2); // Datos reales (desde la fila 2)
-
-  // Buscar en la columna J (índice 9)
-  const result = rows.find(row => String(row[9] || "").toLowerCase().includes(query));
-
-  if (result) {
+    }
+  
+    const headers = expedienteData[1]; // Fila 1 contiene los títulos de las columnas
+    const rows = expedienteData.slice(2); // Datos reales (desde la fila 2)
+  
+    // Determinar la columna según el tipo de búsqueda
+    const columnIndex = searchType === "expediente" ? 9 : 10;
+  
+    // Buscar en la columna correspondiente
+    const result = rows.find(row => String(row[columnIndex] || "").toLowerCase().includes(query));
+  
+    if (result) {
       showResultModal(result, headers);
-  } else {
-      // Mostrar alerta si no se encuentran resultados
+    } else {
       Swal.fire({
-          title: "Sin resultados",
-          text: "No se encontraron resultados para el número de expediente ingresado.",
-          icon: "info",
-          confirmButtonText: "Aceptar"
+        title: "Sin resultados",
+        text: "No se encontraron resultados para el criterio ingresado.",
+        icon: "info",
+        confirmButtonText: "Aceptar",
       });
+    }
   }
-}
+  
 
 // Función para mostrar resultados en el modal
 function showResultModal(row, headers) {

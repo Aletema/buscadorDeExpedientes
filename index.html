@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,22 +11,26 @@
   <style>
   </style>
 </head>
+
 <body>
   <h1>Buscador de Expedientes</h1>
-    <input type="text" id="searchQuery" placeholder="Buscar por número de expediente..." />
-  
-
+  <select id="searchType">
+    <option value="expediente">Buscar por número de expediente</option>
+    <option value="nombre">Buscar por nombre del expediente</option>
+  </select>
+  <input type="text" id="searchQuery" placeholder="Ingrese el valor a buscar..." />
   <!-- Modal para mostrar resultados -->
   <div id="overlay" onclick="closeModal()"></div>
   <div id="modal">
     <div id="modalContent"></div>
     <button onclick="closeModal()">Cerrar</button>
   </div>
-<!-- Enlace para hacer otra búsqueda -->
-<div  class="buttons-container">
-  <a href="index.html" id="searchAgainLink">Hacer otra búsqueda</a>
-  <button onclick="searchExpediente()">Buscar</button>
-</div>
+  <!-- Enlace para hacer otra búsqueda -->
+  <div class="buttons-container">
+    <a href="index.html" id="searchAgainLink">Hacer otra búsqueda</a>
+    <button onclick="searchExpediente()">Buscar</button>
+  </div>
   <script src="script.js"></script>
 </body>
+
 </html>
