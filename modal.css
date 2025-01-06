@@ -1,0 +1,77 @@
+/* Modal */
+#modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    z-index: 1001;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+/* Fondo oscuro del modal */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+/* Botón dentro del modal */
+#modal button {
+    display: block;
+    margin: 20px auto 0;
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Indicadores de estado */
+.indicador-no-apto {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.indicador-apto {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Responsividad para el modal */
+@media (max-width: 768px) {
+    #modal {
+        padding: 15px;
+        width: 95%;
+        max-height: 90vh; /* Más espacio vertical en pantallas pequeñas */
+    }
+
+    #modal button {
+        width: 100%; /* Botón ocupa todo el ancho */
+        max-width: 250px;
+    }
+}

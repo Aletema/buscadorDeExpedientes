@@ -1,0 +1,125 @@
+/* Estilos globales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #0056b3;
+}
+
+/* Inputs de búsqueda */
+input[type="text"] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 80%;
+    max-width: 500px;
+}
+
+/* Contenedor para los botones principales */
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px; /* Espacio entre botones */
+}
+
+button,
+#searchAgainLink {
+    width: 200px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none; /* Elimina el subrayado del enlace */
+}
+
+/* Botón "Buscar" */
+button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #003f7d;
+}
+
+button:active {
+    background-color: #002f5e;
+}
+
+/* Enlace "Hacer otra búsqueda" */
+#searchAgainLink {
+    color: #f1c40f; /* Amarillo */
+    background-color: #2c3e50; /* Fondo oscuro */
+    transition: background-color 0.3s;
+}
+
+#searchAgainLink:hover {
+    background-color: #34495e; /* Cambia el fondo al pasar el mouse */
+}
+
+/* Contenedor para los botones de búsqueda */
+.search-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Espacio entre botones */
+    margin-bottom: 20px;
+}
+
+/* Botones de búsqueda */
+.search-buttons-container button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-buttons-container button:hover {
+    background-color: #003f7d;
+}
+
+.search-buttons-container button:active {
+    background-color: #002f5e;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    /* Cambiar la dirección de los botones a columna */
+    .search-buttons-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px; /* Mayor espacio entre botones */
+    }
+
+    /* Ajustar el ancho de los botones */
+    .search-buttons-container button {
+        width: 80%;
+        max-width: 300px;
+    }
+
+    button,
+    #searchAgainLink {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    input[type="text"] {
+        width: 90%; /* Ajustar el tamaño del input */
+    }
+}
