@@ -15,8 +15,8 @@ function buscarExpediente() {
     const headers = expedienteData[1]; // Fila de encabezados
     const rows = expedienteData.slice(2); // Datos reales (desde la fila 2)
 
-    // Filtrar resultados por coincidencia en la columna del número de expediente (columna J)
-    const result = rows.find(row => String(row[9] || "").toLowerCase().includes(query));
+    // Filtrar resultados por coincidencia en la columna del número de expediente (columna Q)
+    const result = rows.find(row => String(row[16] || "").toLowerCase().includes(query));
 
     if (result) {
         // Llamar a la función showResultModal con el resultado encontrado
@@ -49,8 +49,8 @@ function buscarNombreExpediente() {
     const headers = expedienteData[1]; // Fila de encabezados
     const rows = expedienteData.slice(2); // Datos reales (desde la fila 2)
 
-    // Buscar el primer resultado que coincida con el nombre del expediente (columna K)
-    const result = rows.find(row => String(row[10] || "").toLowerCase().includes(query));
+    // Buscar el primer resultado que coincida con el nombre del expediente (columna R)
+    const result = rows.find(row => String(row[17] || "").toLowerCase().includes(query));
 
     if (result) {
         // Llamar a la función showResultModal con el resultado encontrado

@@ -2,9 +2,9 @@
 let expedienteData = [];
 
 // ID de la hoja de Google Sheets y clave de API
-const apiKey = "AIzaSyAo_EiLMzVXYd-C0A8-9MzCkrYDBL6bwzI"; // Sustituye con tu API Key válida
-const sheetId = "13_N-JkdVvl3Tu5txTu9qR2xXpSVWzhqowhLn-JWUCKc"; // Asegúrate de que este ID sea correcto
-const range = "RegistroProvincialdePM"; // Asegúrate de que el nombre de la hoja es correcto
+const apiKey = "AIzaSyAo_EiLMzVXYd-C0A8-9MzCkrYDBL6bwzI"; // API Key válida
+const sheetId = "13_N-JkdVvl3Tu5txTu9qR2xXpSVWzhqowhLn-JWUCKc"; // ID de la hoja de calculo en donde estan los datos
+const range = "RegistroProvincialdePM"; // Nombre de la hoja de calculo
 
 // Función para cargar datos desde Google Sheets
 async function loadFromGoogleSheets() {

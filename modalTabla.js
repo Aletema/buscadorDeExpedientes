@@ -10,41 +10,41 @@ function showResultModal(row, headers) {
         },
         {
             title: "FECHA PRESENTACION DJP",
-            index: 5,
+            index: 12,
             isDate: true
         },
         {
             title: "Infracciones",
-            index: 8
+            index: 15
         },
         {
             title: "N° de Expediente",
-            index: 9
+            index: 16
         },
         {
             title: "Nombre del expediente",
-            index: 10
+            index: 17
         },
         {
             title: "Mineral",
-            index: 11
+            index: 18
         },
         {
             title: "Vencimiento DJA",
-            index: 14,
+            index: 20,
             isDate: true
         },
         {
             title: "Titular",
-            index: 16
+            index: 22
         },
         {
             title: "Estado legal",
-            index: 17
+            index: 23
         },
         {
             title: "Estado del expediente",
-            index: 22
+            index: 29
         },
     ];
 
@@ -58,7 +58,7 @@ function showResultModal(row, headers) {
         .join("");
 
     // Revisar el "Estado del expediente" y generar el indicador dinámico
-    const estadoExpediente = String(row[22] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
+    const estadoExpediente = String(row[29] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
     let indicador = "";
 
     if (estadoExpediente.includes("NO")) {
@@ -119,9 +119,9 @@ function showResultsTable(rows, headers, fields) {
 
     rows.forEach(row => {
         table += `<tr>
-                      <td>${row[9] || "N/A"}</td> <!-- N° de Expediente -->
-                      <td>${row[10] || "N/A"}</td> <!-- Nombre de Expediente -->
-                      <td>${row[11] || "N/A"}</td> <!-- Mineral -->
+                      <td>${row[16] || "N/A"}</td> <!-- N° de Expediente -->
+                      <td>${row[17] || "N/A"}</td> <!-- Nombre de Expediente -->
+                      <td>${row[18] || "N/A"}</td> <!-- Mineral -->
                   </tr>`;
     });
 
