@@ -40,7 +40,7 @@ function showResultModal(row, headers) {
         },
         {
             title: "Estado legal",
-            index: 23
+            index: 24
         },
         {
             title: "Estado del expediente",
