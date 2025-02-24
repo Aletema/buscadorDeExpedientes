@@ -113,6 +113,7 @@ function showResultsTable(rows, headers, fields) {
                         <th>N° de Expediente</th>
                         <th>Nombre de Expediente</th>
                         <th>Mineral</th>
+                        <th>Estado Expediente</th>
                       </tr>
                     </thead>
                     <tbody>`;
@@ -122,6 +123,7 @@ function showResultsTable(rows, headers, fields) {
                       <td>${row[16] || "N/A"}</td> <!-- N° de Expediente -->
                       <td>${row[17] || "N/A"}</td> <!-- Nombre de Expediente -->
                       <td>${row[18] || "N/A"}</td> <!-- Mineral -->
+                      <td>${row[29] || "N/A"}</td> <!-- Estado Expediente -->
                   </tr>`;
     });
 
