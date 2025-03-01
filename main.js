@@ -33,3 +33,16 @@ async function loadFromGoogleSheets() {
         console.log("No se encontraron datos.");
     }
 })();
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".search-buttons-container button");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", function () {
+            // Remover la clase 'active' de todos los botones
+            buttons.forEach(btn => btn.classList.remove("active"));
+            
+            // Agregar la clase 'active' solo al botón clickeado
+            this.classList.add("active");
+        });
+    });
+});
