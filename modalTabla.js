@@ -44,7 +44,7 @@ function showResultModal(row, headers) {
         },
         {
             title: "Estado del expediente",
-            index: 29
+            index: 30
         },
     ];
 
@@ -58,7 +58,7 @@ function showResultModal(row, headers) {
         .join("");
 
     // Revisar el "Estado del expediente" y generar el indicador dinámico
-    const estadoExpediente = String(row[29] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
+    const estadoExpediente = String(row[30] || "").toUpperCase(); // Convertir a mayúsculas para evitar problemas de case
     let indicador = "";
 
     if (estadoExpediente.includes("NO")) {

@@ -1,4 +1,4 @@
-// Variable global para almacenar los datos del expediente
+// Variable global para almacenar los datos
 let expedienteData = [];
 
 // ID de la hoja de Google Sheets y clave de API
