@@ -120,10 +120,10 @@ function showResultsTable(rows, headers, fields) {
 
     rows.forEach(row => {
         table += `<tr>
-                      <td>${row[16] || "N/A"}</td> <!-- N° de Expediente -->
-                      <td>${row[17] || "N/A"}</td> <!-- Nombre de Expediente -->
-                      <td>${row[18] || "N/A"}</td> <!-- Mineral -->
-                      <td>${row[29] || "N/A"}</td> <!-- Estado Expediente -->
+                      <td>${row[17] || "N/A"}</td> <!-- N° de Expediente -->
+                      <td>${row[18] || "N/A"}</td> <!-- Nombre de Expediente -->
+                      <td>${row[19] || "N/A"}</td> <!-- Mineral -->
+                      <td>${row[30] || "N/A"}</td> <!-- Estado Expediente -->
                   </tr>`;
     });
 
